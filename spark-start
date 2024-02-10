@@ -15,7 +15,9 @@ fi
 # Set up and launch standalone Spark cluster
 ################################################################################
 
-module load spark/3.2.1 python/3.10.4 pyarrow/8.0.0
+module purge
+module load Java/19.0.2
+module load GCC/11.3.0 OpenMPI/4.1.4 Spark/3.3.1
 
 # Set up standalone cluster daemon properties. The spark master and spark worker
 # processes will run with the resources defined here.
@@ -89,8 +91,8 @@ spark.authenticate.secret          ${SPARK_SECRET}
 spark.ui.killEnabled               false
 
 # Add Basic Authentication to Spark Cluster Web UI
-spark.ui.filters edu.umich.arc.jonpot.BasicAuthenticationFilter
-spark.edu.umich.arc.jonpot.BasicAuthenticationFilter.params username=admin,password=${SPARK_WEBUI_SECRET}
+# spark.ui.filters edu.umich.arc.jonpot.BasicAuthenticationFilter
+# spark.edu.umich.arc.jonpot.BasicAuthenticationFilter.params username=admin,password=${SPARK_WEBUI_SECRET}
 
 # Enable Spark application web UI (does not affect Spark cluster web UI).
 spark.ui.enabled                   true
