@@ -1,12 +1,13 @@
-# Spark on Great Lakes and Armis2
+# Spark on MSU HPCC 
 
-These instructions show how to run a stand-alone Spark instance on the Great Lakes and Armis2 HPC clusters. This code is intended for researchers who need to submit a batch job to Spark and are comfortable with the technical details of sizing a stand-alone Spark instance. If instead, you are looking to interactively explore data through a Jupyter Notebook with Spark integration without a large learning curve, please use the Open OnDemand Jupyter + Spark app available through a web browser at https://greatlakes.arc-ts.umich.edu or https://armis2.arc-ts.umich.edu.
+This repository was adapted from a UofM example to run on thier systems.
 
-To launch a Spark instance on an HPC cluster, you need to copy the example slurm job script `batch-job.sh` and customize it with your slurm account name, the resources you require for your Spark job, and the location of your Spark code. Then, you will run the slurm job script with `sbatch batch-job.sh`. As the slurm job runs, it will call the `spark-start` script which launches a standalone Spark cluster and submits a Spark batch job with `spark-submit`. When the Spark job finishes, the slurm job will terminate. Spark driver logs are written to the slurm job's output log. The `examples` directory in this repo contains some example Spark code.
+These instructions show how to run a stand-alone Spark instance on the MSU HPCC cluster. This code is intended for researchers who need to submit a batch job to Spark and are comfortable with the technical details of sizing a stand-alone Spark instance. 
+
+To launch a Spark instance on an HPC cluster, you need to copy the example slurm job script `batch-job.sh` customize it with the resources you require for your Spark job, and the location of your Spark code. Then, you will run the slurm job script with `sbatch batch-job.sh`. As the slurm job runs, it will call the `spark-start` script which launches a standalone Spark cluster and submits a Spark batch job with `spark-submit`. When the Spark job finishes, the slurm job will terminate. Spark driver logs are written to the slurm job's output log. The `examples` directory in this repo contains some example Spark code.
 
 ## An Example
-
-Copy and customize the `batch-job.sh` slurm job script to use your Great Lakes or Armis2 account as well as specify the resources you wish to allocate to your Spark cluster. Notice that the `batch-job.sh` file ends with a `spark-submit` command that will submit a batch job to your Spark cluster. You must modify this command to reference your Spark job code.
+Clone this repository to your HPCC account.
 
 Additionally, you must modify the `spark-submit` command line options `--executor-cores`, `--executor-memory`, and `--total-executor-cores` to explicitly specify the resources you desire for your Spark job. Otherwise, your job may have significantly fewer resources than you intended because these parameters have low default values. Typically, you will set these parameter values to be slightly less than the resources requested in your slurm job script to allow for Spark overhead. As a rule of thumb, the Spark cluster consumes roughly 2 cpu cores and 10g overhead. Additional details on resource allocation are later in this document.
 
