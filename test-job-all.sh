@@ -1,20 +1,19 @@
 #!/bin/bash
 #SBATCH --job-name=spark-cluster
-#SBATCH --account=support        # change to your account
-#SBATCH --partition=standard
 #SBATCH --nodes=2                # node count, change as needed
 #SBATCH --ntasks-per-node=1      # do not change, leave as 1 task per node
-#SBATCH --cpus-per-task=36       # cpu-cores per task, change as needed
+#SBATCH --cpus-per-task=4        # cpu-cores per task, change as needed
 #SBATCH --mem=180g               # memory per node, change as needed
 #SBATCH --time=00:60:00
-#SBATCH --mail-type=NONE
 
 # These modules are required. You may need to customize the module version
 # depending on which cluster you are on.
-module load spark/3.2.1 python/3.10.4 pyarrow/8.0.0
+module purge
+module load JAVA/19.0.2
+module load --ignore-cache GCC/11.3.0 OpenMPI/4.1.4 Spark/3.3.1
 
 # Start the Spark instance.
-spark-start
+./spark-start
 
 # Source spark-env.sh to get useful env variables.
 source ${HOME}/.spark-local/${SLURM_JOB_ID}/spark/conf/spark-env.sh
@@ -48,7 +47,7 @@ SPARK_TOTAL_EXECUTOR_CORES=$(( SPARK_MAX_NUM_EXECUTOR * SPARK_EXECUTOR_CORES ))
 
 # Customize the executor resources below to match resources requested above
 # with an allowance for spark driver overhead. Also change the path to your spark job.
-EXAMPLES_DIR="/sw/examples/spark/spark-on-hpc/examples"
+EXAMPLES_DIR="./examples"
 
 spark-submit --master ${SPARK_MASTER_URL} \
   --executor-cores ${SPARK_EXECUTOR_CORES} \
